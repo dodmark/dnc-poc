@@ -5,7 +5,7 @@ import { ConfigService } from '@nestjs/config';
 export class DncService {
     constructor(private configService: ConfigService) {}
 
-    findAll() {
+    findPhoneNumber(phoneNumber: string) {
 
         const pg = require('knex')({
             client: 'pg',
@@ -16,16 +16,14 @@ export class DncService {
                 user: this.configService.get<string>('POSTGRES_USER'),
                 database: this.configService.get<string>('POSTGRES_DATABASE'),
                 password: this.configService.get<string>('POSTGRES_PASSWORD'),
-                // ssl: config['DB_SSL'] ? { rejectUnauthorized: false } : false,
             },
         });
   
         const isInDNC = async () => {
-            const results = await pg.select('phone_number').from('dnc_master').limit(1);
-            return results;
+            const results = await pg.select('phone_number').from('dnc_master').where('phone_number', phoneNumber).limit(1);
+            return (results.length >0 ? true : false);
         }
 
         return isInDNC();
-        // return 'Get Bent, Asshole';
    } 
 }
