@@ -1,26 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { DNCMaster } from './entities/dnc-master.entity';
 
 @Injectable()
 export class DncService {
-    constructor(private configService: ConfigService) {}
+    constructor(private configService: ConfigService, @InjectRepository(DNCMaster) private readonly repository: Repository<DNCMaster>) {}
 
     findPhoneNumber(phoneNumber: string) {
-
-        const pg = require('knex')({
-            client: 'pg',
-            connection: {
-            //   connectionString: config.DATABASE_URL,
-                host: this.configService.get<string>('POSTGRES_HOST'),
-                port: this.configService.get<string>('POSTGRES_PORT'),
-                user: this.configService.get<string>('POSTGRES_USER'),
-                database: this.configService.get<string>('POSTGRES_DATABASE'),
-                password: this.configService.get<string>('POSTGRES_PASSWORD'),
-            },
-        });
   
         const isInDNC = async () => {
-            const results = await pg.select('phone_number').from('dnc_master').where('phone_number', phoneNumber).limit(1);
+            
+            const results = await this.repository.find({
+                select: { phoneNumber: true },
+                where: { phoneNumber: phoneNumber }
+            });
             return (results.length >0 ? true : false);
         }
 
