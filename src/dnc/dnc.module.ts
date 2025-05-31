@@ -13,7 +13,7 @@ import { DNCSource } from './entities/dnc-source.entity';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [ormConfig],
+      load: [ormConfigLocal],
       expandVariables: true,
     }),
     TypeOrmModule.forRootAsync({

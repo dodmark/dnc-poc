@@ -14,14 +14,30 @@ export class DNCMaster {
         name: 'phone_number',
     })
     phoneNumber: string;
-    @Column()
+    
+    @Column({
+        type: 'smallint'
+    })
     source: number;
-    @Column()
+    
+    @Column({
+        type: 'numeric',
+        width: 3
+    })
     confidence: number;
+    
     @Column()
     link: string; //maybe should be a URL type?
-    @CreateDateColumn()
+    
+    @CreateDateColumn({
+        type: 'timestamp',
+        name: 'created_timestamp'
+    })
     createdTimestamp: Date;
-    @UpdateDateColumn()
+    
+    @UpdateDateColumn({
+        type: 'timestamp',
+        name: 'updated_timestamp'
+    })
     updatedTimestamp: Date;
 }
