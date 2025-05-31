@@ -10,7 +10,7 @@ export default registerAs(
     host: '192.168.1.185',
     port: 5432,
     username: 'gh',
-    password: 'InDaHouseWoof',
+    password: process.env.PG_PROD_PASSWORD,
     database: 'gh',
     entities: [DNCSource, DNCMaster],
     synchronize: false,
